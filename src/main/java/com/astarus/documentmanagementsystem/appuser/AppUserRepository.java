@@ -15,10 +15,10 @@ public interface AppUserRepository
 
     Optional<AppUser> findByEmail(String email);
 
-/*    @Transactional
+    @Transactional
     @Modifying
     @Query("UPDATE AppUser a " +
             "SET a.enabled = TRUE WHERE a.email = ?1")
-    int enableAppUser(String email);*/
+    int enableAppUser(String email);
 
 }

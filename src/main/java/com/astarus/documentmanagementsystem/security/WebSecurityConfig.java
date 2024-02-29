@@ -29,9 +29,11 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         RequestMatcher publicUrls = new OrRequestMatcher(
-                new AntPathRequestMatcher("/register"),
+                new AntPathRequestMatcher("/registration"),
+                new AntPathRequestMatcher("/registration/confirm"),
                 new AntPathRequestMatcher("/registrationSuccess"),
                 new AntPathRequestMatcher("/h2-console/**")
+
         );
 
         http.csrf(AbstractHttpConfigurer::disable)

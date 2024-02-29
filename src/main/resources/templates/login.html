@@ -1,27 +1,40 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Please Log In</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Please Log In</h1>
-<div th:if="${param.error}">
-    Invalid username and password.
-</div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
-<form th:action="@{/login}" method="post">
-    <div>
-        <input type="text" name="username" placeholder="Username"/>
+<div class="container mt-5">
+    <h1 class="text-center">Please Log In</h1>
+    <div th:if="${successMessage}" class="alert alert-success text-center" role="alert">
+        <p th:text="${successMessage}"></p>
     </div>
-    <div>
-        <input type="password" name="password" placeholder="Password"/>
+    <div th:if="${errorMessage}" class="alert alert-danger text-center" role="alert">
+        <p th:text="${errorMessage}"></p>
     </div>
-    <input type="submit" value="Log in"/>
-</form>
-<a href="/register">Not a member? Register here</a>
-
-
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <form action="/login" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Log in</button>
+                </div>
+            </form>
+            <div class="text-center">
+                <a href="/registration">Not a member? Register here</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

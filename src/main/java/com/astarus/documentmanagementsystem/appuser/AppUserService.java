@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,6 +18,7 @@ import java.util.UUID;
 public class AppUserService implements UserDetailsService {
     private final static String USER_NOT_FOUND_MSG =
             "user with email %s not found";
+    private final static int TOKEN_LIFETIME = 60;
 
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -32,14 +34,12 @@ public class AppUserService implements UserDetailsService {
     }
 
     public String signUpUser(AppUser appUser) {
-        boolean userExists = appUserRepository
-                .findByEmail(appUser.getEmail())
-                .isPresent();
-        if (userExists) {
-            // TODO check of attributes are the same and
-            // TODO if email not confirmed send confirmation email.
-
-            throw new IllegalStateException("email already taken");
+        Optional<AppUser> user = appUserRepository
+                .findByEmail(appUser.getEmail());
+        if (user.isPresent()) {
+            if (user.get().getEnabled()) {
+                throw new IllegalStateException("email already taken");
+            }
         }
         String encodedPassword = bCryptPasswordEncoder
                 .encode(appUser.getPassword());
@@ -50,13 +50,13 @@ public class AppUserService implements UserDetailsService {
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(60),
+                LocalDateTime.now().plusMinutes(TOKEN_LIFETIME),
                 appUser
         );
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
 
-        return "OK";
+        return token;
     }
 
     public int enableAppUser(String email) {

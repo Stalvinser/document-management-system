@@ -1,5 +1,6 @@
 package com.astarus.documentmanagementsystem.registration;
 
+import com.astarus.documentmanagementsystem.email.EmailSendingException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class RegistrationController {
     private final RegistrationService registrationService;
 
-    @GetMapping("/register")
+    @GetMapping("/registration")
     public String showRegistrationForm(Model model) {
         model.addAttribute("registrationRequest", new RegistrationRequest());
         return "registrationForm";
@@ -23,17 +24,25 @@ public class RegistrationController {
         return "registrationSuccess";
     }
 
-    @PostMapping("/register")
+    @PostMapping("/registration")
     public String registerUserAccount(@ModelAttribute("registrationRequest") RegistrationRequest registrationRequest,
-                                      RedirectAttributes redirectAttributes) {
-        String message = registrationService.register(registrationRequest);
-        redirectAttributes.addFlashAttribute("message", message);
-        return "redirect:/registrationSuccess";
+                                      RedirectAttributes redirectAttributes, Model model) {
+        try {
+            registrationService.register(registrationRequest);
+            String successMessage = "Registration successful. A confirmation email has been sent to your account. Please check your email and click on the confirmation link to activate your account.";
+            redirectAttributes.addFlashAttribute("message", successMessage);
+            return "redirect:/registrationSuccess";
+        } catch (EmailSendingException e) {
+            model.addAttribute("registrationError", e.getMessage());
+            return "registrationForm";
+        }
     }
-    //TODO: REDIRECT TO LOGIN, CATCH METHOD
-    @GetMapping(path = "confirm")
-    public String confirm(@RequestParam("token") String token) {
-        return registrationService.confirmToken(token);
+    @GetMapping(path = "/registration/confirm")
+    public String confirm(@RequestParam("token") String token, RedirectAttributes redirectAttributes) {
+        registrationService.confirmToken(token);
+        String successMessage = "Email confirmed. You can login now.";
+        redirectAttributes.addFlashAttribute("successMessage", successMessage);
+        return "redirect:/login";
     }
 
 }

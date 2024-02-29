@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .failureUrl("/login?error=true") // Custom failure URL
                         .permitAll()
                 );
         return http.build();

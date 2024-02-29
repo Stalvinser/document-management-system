@@ -1,13 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${message}"></title>
+    <title>Registration Successful</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div>
-    <h2 th:if="${message}" th:text="${message}"></h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Registration Successful!</h4>
+                <p>A confirmation email has been sent to your account. Please <b>check your email and click on the confirmation link</b> to activate your account.</p>
+                <hr>
+            </div>
+            <div class="text-center mt-4">
+                <a href="/login" class="btn btn-primary">Go to Login Page</a>
+            </div>
+        </div>
+    </div>
 </div>
-<a href="/login">Return to login page</a>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

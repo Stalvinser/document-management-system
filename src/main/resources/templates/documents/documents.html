@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Document List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Document Management System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="/documents">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/documents/add">Add Document</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/documents/search">Search Documents</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-5">
+    <h2>All Documents</h2>
+    <div th:if="${successMessage}" class="alert alert-success text-center" role="alert">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}" class="alert alert-danger text-center" role="alert">
+        <p th:text="${errorMessage}"></p>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">
+                <a th:href="@{/documents(sort='documentName', dir=${currentSort == 'documentName' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
+                    Name <i th:if="${currentSort == 'documentName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents(sort='documentDate', dir=${currentSort == 'documentDate' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
+                    Date <i th:if="${currentSort == 'documentDate'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents(sort='authorName', dir=${currentSort == 'authorName' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
+                    Author <i th:if="${currentSort == 'authorName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents(sort='description', dir=${currentSort == 'description' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
+                    Description <i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents(sort='fileName', dir=${currentSort == 'fileName' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
+                    File name <i th:if="${currentSort == 'fileName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                </a>
+            </th>
+            <th scope="col">Open File</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="document : ${documents}">
+            <td th:text="${document.documentName}"></td>
+            <td th:text="${#dates.format(document.documentDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${document.authorName}"></td>
+            <td th:text="${document.description}"></td>
+            <td th:text="${document.fileName}"></td>
+            <td><a th:href="@{'/files/' + ${document.fileUuid}}" target="_blank">Open</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

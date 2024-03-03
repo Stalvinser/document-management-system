@@ -26,11 +26,13 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String registerUserAccount(@ModelAttribute("registrationRequest") RegistrationRequest registrationRequest,
-                                      RedirectAttributes redirectAttributes, Model model) {
+                                      RedirectAttributes redirectAttributes,
+                                      Model model) {
         try {
+            String userEmail = registrationRequest.getEmail(); // Assuming you have a getEmail() method in RegistrationRequest
             registrationService.register(registrationRequest);
-            String successMessage = "Registration successful. A confirmation email has been sent to your account. Please check your email and click on the confirmation link to activate your account.";
-            redirectAttributes.addFlashAttribute("message", successMessage);
+            System.out.println(userEmail);
+            redirectAttributes.addAttribute("userEmail", userEmail);
             return "redirect:/registrationSuccess";
         } catch (EmailSendingException e) {
             model.addAttribute("registrationError", e.getMessage());

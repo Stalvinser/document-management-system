@@ -27,7 +27,7 @@ public class AppUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {
-        return appUserRepository.findByEmail(email)
+        return appUserRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(
                                 String.format(USER_NOT_FOUND_MSG, email)));
@@ -35,7 +35,7 @@ public class AppUserService implements UserDetailsService {
 
     public String signUpUser(AppUser appUser) {
         Optional<AppUser> user = appUserRepository
-                .findByEmail(appUser.getEmail());
+                .findByEmailIgnoreCase(appUser.getEmail());
         if (user.isPresent()) {
             if (user.get().getEnabled()) {
                 throw new IllegalStateException("email already taken");
@@ -59,7 +59,7 @@ public class AppUserService implements UserDetailsService {
         return token;
     }
 
-    public int enableAppUser(String email) {
-        return appUserRepository.enableAppUser(email);
+    public void enableAppUser(String email) {
+         appUserRepository.enableAppUser(email);
     }
 }

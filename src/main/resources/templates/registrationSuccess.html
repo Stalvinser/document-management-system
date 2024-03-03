@@ -11,7 +11,9 @@
         <div class="col-md-8">
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">Registration Successful!</h4>
-                <p>A confirmation email has been sent to your account. Please <b>check your email and click on the confirmation link</b> to activate your account.</p>
+                <p>A confirmation email has been sent to <b th:text="${userEmail}"></b>.
+                    Please <b>check your email and click on the confirmation link</b> to activate your account.
+                </p>
                 <hr>
             </div>
             <div class="text-center mt-4">

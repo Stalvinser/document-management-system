@@ -3,6 +3,8 @@ package com.astarus.documentmanagementsystem.registration;
 import lombok.*;
 
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegistrationRequest {

@@ -1,4 +1,4 @@
-package com.astarus.documentmanagementsystem.security;
+package com.astarus.documentmanagementsystem.security.configuration;
 
 import com.astarus.documentmanagementsystem.appuser.AppUserService;
 import lombok.AllArgsConstructor;
@@ -46,6 +46,7 @@ public class WebSecurityConfig {
                 .formLogin(Customizer.withDefaults())
                 .formLogin(form -> form
                         .loginPage("/login")
+                        .defaultSuccessUrl("/documents", true)
                         .failureUrl("/login?error=true") // Custom failure URL
                         .permitAll()
                 );

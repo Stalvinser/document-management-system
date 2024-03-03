@@ -1,4 +1,4 @@
-package com.astarus.documentmanagementsystem.configuration;
+package com.astarus.documentmanagementsystem;
 
 import com.astarus.documentmanagementsystem.appuser.AppUser;
 import com.astarus.documentmanagementsystem.appuser.AppUserRepository;
@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 
 @Configuration
-public class DataLoader {
+public class InitialDataLoader {
 
     @Bean
     CommandLineRunner run(AppUserRepository appUserRepository, ConfirmationTokenService confirmationTokenService, PasswordEncoder passwordEncoder) {

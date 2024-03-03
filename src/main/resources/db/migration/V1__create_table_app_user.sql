@@ -1,7 +1,5 @@
--- Drop table if exists to avoid conflicts
 DROP TABLE IF EXISTS app_user;
 
--- Create the TBL_EMPLOYEES table
 CREATE TABLE app_user (
                           id BIGINT PRIMARY KEY AUTO_INCREMENT,
                           first_name VARCHAR(255) NOT NULL,

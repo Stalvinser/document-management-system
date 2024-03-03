@@ -42,5 +42,5 @@ public class Document {
     private Set<DocumentShare> shares = new HashSet<>();
 
     @OneToOne(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
-    private File file;
+    private FileEntity file;
 }

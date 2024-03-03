@@ -3,10 +3,9 @@ package com.astarus.documentmanagementsystem.document.service;
 import com.astarus.documentmanagementsystem.appuser.AppUser;
 import com.astarus.documentmanagementsystem.appuser.AppUserRepository;
 import com.astarus.documentmanagementsystem.document.dto.DocumentCreationDTO;
-import com.astarus.documentmanagementsystem.document.dto.DocumentViewDTO;
 import com.astarus.documentmanagementsystem.document.entity.Document;
 import com.astarus.documentmanagementsystem.document.entity.DocumentInfoView;
-import com.astarus.documentmanagementsystem.document.entity.File;
+import com.astarus.documentmanagementsystem.document.entity.FileEntity;
 import com.astarus.documentmanagementsystem.document.repository.DocumentInfoViewRepository;
 import com.astarus.documentmanagementsystem.document.repository.DocumentRepository;
 import com.astarus.documentmanagementsystem.document.repository.FileRepository;
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.data.domain.Sort;
@@ -36,6 +34,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final FileRepository fileRepository;
     private final DocumentInfoViewRepository documentInfoViewRepository;
+
     @Transactional
     public void saveDocument(DocumentCreationDTO documentCreationDTO, MultipartFile multipartFile) throws IOException {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -62,17 +61,18 @@ public class DocumentService {
             document.setAppUser(user);
             Document savedDocument = documentRepository.save(document);
 
-            File file = new File();
-            file.setFileName(originalFilename);
-            file.setUuid(uuid);
-            file.setContentType(multipartFile.getContentType());
-            file.setDocument(savedDocument);
-            fileRepository.save(file);
+            FileEntity fileEntity = new FileEntity();
+            fileEntity.setFileName(originalFilename);
+            fileEntity.setUuid(uuid);
+            fileEntity.setContentType(multipartFile.getContentType());
+            fileEntity.setDocument(savedDocument);
+            fileRepository.save(fileEntity);
         } catch (Exception e) {
             Files.deleteIfExists(filePath);
             throw new RuntimeException("Failed to save document and file: " + e.getMessage(), e);
         }
     }
+
     public List<DocumentInfoView> findAllDocuments(String sort, String dir) {
         Sort.Direction direction = Sort.Direction.fromString(dir);
         Sort sortSpecification = Sort.by(direction, sort);
@@ -81,7 +81,12 @@ public class DocumentService {
     }
 
 
-    public List<DocumentInfoView> searchDocuments(String name, String author, String description, Date dateFrom, Date dateTo, String sort, String dir) {
+    public List<DocumentInfoView> searchDocuments(String name, String author,
+                                                  String description,
+                                                  Date dateFrom,
+                                                  Date dateTo,
+                                                  String sort,
+                                                  String dir) {
         Specification<DocumentInfoView> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -97,11 +102,16 @@ public class DocumentService {
                 predicates.add(cb.like(cb.lower(root.get("description")), "%" + description.toLowerCase() + "%"));
             }
 
-            if (dateFrom != null && dateTo != null) {
+            if (dateFrom == null && dateTo != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get("documentDate"), dateTo));
+            } else if (dateFrom != null && dateTo == null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get("documentDate"), dateFrom));
+            } else if (dateFrom != null && dateTo != null) {
+
                 predicates.add(cb.between(root.get("documentDate"), dateFrom, dateTo));
             }
-            // Handling sorting
-            jakarta.persistence.criteria.Path<Object> sortBy = root.get(sort); // Correctly obtaining the path to the field
+
+            jakarta.persistence.criteria.Path<Object> sortBy = root.get(sort);
             Order order = "asc".equalsIgnoreCase(dir) ? cb.asc(sortBy) : cb.desc(sortBy);
             query.orderBy(order);
 

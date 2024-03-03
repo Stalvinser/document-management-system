@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Search Documents</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Document Management System</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -28,39 +30,90 @@
 
 <div class="container mt-5">
     <h2>Search Documents</h2>
-    <form class="mb-4">
-        <div class="form-row">
-            <div class="col">
-                <input type="text" class="form-control" placeholder="Document name">
+    <form id="searchForm" th:action="@{/documents/search}" method="get">
+        <div class="row">
+            <div class="col-5">
+                <input type="text" class="form-control" name="name" placeholder="Name" th:value="${param.name}"/>
             </div>
-            <div class="col">
-                <input type="date" class="form-control">
+            <div class="col-5">
+                <input type="text" class="form-control" name="author" placeholder="Author" th:value="${param.author}"/>
             </div>
-            <div class="col">
-                <input type="text" class="form-control" placeholder="Author">
-            </div>
-            <div class="col">
-                <button type="submit" class="btn btn-primary">Search</button>
+            <div class="col-2">
+                <button type="reset" class="btn btn-secondary btn-block" onclick="resetFormAndSubmit()">Reset</button>
             </div>
         </div>
+        <div class="row mt-3">
+            <div class="col">
+                <input type="date" class="form-control" name="dateFrom" placeholder="Date From"
+                       th:value="${param.dateFrom}"/>
+            </div>
+            <div class="col">
+                <input type="date" class="form-control" name="dateTo" placeholder="Date To" th:value="${param.dateTo}"/>
+            </div>
+            <div class="col-5">
+                <input type="text" class="form-control" name="description" placeholder="Description"
+                       th:value="${param.description}"/>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary btn-block">Search</button>
+            </div>
+        </div>
+        <input type="hidden" name="sort" th:value="${currentSort}" />
+        <input type="hidden" name="dir" th:value="${currentDir}" />
     </form>
 
-    <table class="table">
+    <table class="table mt-3">
         <thead>
         <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Date</th>
-            <th scope="col">Author</th>
-            <th scope="col">Description</th>
+            <th scope="col">
+                <a th:href="@{/documents/search(sort='documentName', dir=${currentSort == 'documentName' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
+                    Name <i th:if="${currentSort == 'documentName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents/search(sort='documentDate', dir=${currentSort == 'documentDate' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
+                    Date <i th:if="${currentSort == 'documentDate'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents/search(sort='authorName', dir=${currentSort == 'authorName' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
+                    Author <i th:if="${currentSort == 'authorName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents/search(sort='description', dir=${currentSort == 'description' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
+                    Description <i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                </a>
+            </th>
+            <th scope="col">
+                <a th:href="@{/documents/search(sort='fileName', dir=${currentSort == 'fileName' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
+                    File Name <i th:if="${currentSort == 'fileName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                </a>
+            </th>
             <th scope="col">Open File</th>
         </tr>
+
         </thead>
-        <tbody>
-        <!-- Search results will be dynamically inserted here -->
+        <tbody th:each="document : ${documents}">
+        <tr>
+            <td th:text="${document.documentName}"></td>
+            <td th:text="${#dates.format(document.documentDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${document.authorName}"></td>
+            <td th:text="${document.description}"></td>
+            <td th:text="${document.fileName}"></td>
+            <td><a th:href="@{'/files/' + ${document.fileUuid}}" target="_blank">Open</a></td>
+        </tr>
         </tbody>
     </table>
 </div>
-
+<script>
+    function resetFormAndSubmit() {
+        // Clear input fields
+        document.querySelectorAll('input[type=text], input[type=date]').forEach(input => input.value = '');
+        // Submit the form
+        document.getElementById('searchForm').submit();
+    }
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

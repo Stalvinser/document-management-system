@@ -39,31 +39,32 @@
         <tr>
             <th scope="col">
                 <a th:href="@{/documents(sort='documentName', dir=${currentSort == 'documentName' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
-                    Name <i th:if="${currentSort == 'documentName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                    Name <i th:if="${currentSort == 'documentName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents(sort='documentDate', dir=${currentSort == 'documentDate' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
-                    Date <i th:if="${currentSort == 'documentDate'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                    Date <i th:if="${currentSort == 'documentDate'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents(sort='authorName', dir=${currentSort == 'authorName' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
-                    Author <i th:if="${currentSort == 'authorName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                    Author <i th:if="${currentSort == 'authorName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents(sort='description', dir=${currentSort == 'description' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
-                    Description <i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                    Description <i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents(sort='fileName', dir=${currentSort == 'fileName' && currentDir == 'ASC' ? 'DESC' : 'ASC'})}">
-                    File name <i th:if="${currentSort == 'fileName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-down-alt' : 'bi bi-sort-up-alt'}"></i>
+                    File name <i th:if="${currentSort == 'fileName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">Open File</th>
         </tr>
+
         </thead>
         <tbody>
         <tr th:each="document : ${documents}">

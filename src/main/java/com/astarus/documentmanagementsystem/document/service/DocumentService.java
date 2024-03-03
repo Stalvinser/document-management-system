@@ -10,7 +10,10 @@ import com.astarus.documentmanagementsystem.document.entity.File;
 import com.astarus.documentmanagementsystem.document.repository.DocumentInfoViewRepository;
 import com.astarus.documentmanagementsystem.document.repository.DocumentRepository;
 import com.astarus.documentmanagementsystem.document.repository.FileRepository;
+import jakarta.persistence.criteria.Order;
+import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +23,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
+
 import org.springframework.data.domain.Sort;
 
 @Service
@@ -76,4 +79,36 @@ public class DocumentService {
 
         return documentInfoViewRepository.findAll(sortSpecification);
     }
+
+
+    public List<DocumentInfoView> searchDocuments(String name, String author, String description, Date dateFrom, Date dateTo, String sort, String dir) {
+        Specification<DocumentInfoView> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (name != null && !name.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("documentName")), "%" + name.toLowerCase() + "%"));
+            }
+
+            if (author != null && !author.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("authorName")), "%" + author.toLowerCase() + "%"));
+            }
+
+            if (description != null && !description.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("description")), "%" + description.toLowerCase() + "%"));
+            }
+
+            if (dateFrom != null && dateTo != null) {
+                predicates.add(cb.between(root.get("documentDate"), dateFrom, dateTo));
+            }
+            // Handling sorting
+            jakarta.persistence.criteria.Path<Object> sortBy = root.get(sort); // Correctly obtaining the path to the field
+            Order order = "asc".equalsIgnoreCase(dir) ? cb.asc(sortBy) : cb.desc(sortBy);
+            query.orderBy(order);
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        return documentInfoViewRepository.findAll(spec);
+    }
+
 }

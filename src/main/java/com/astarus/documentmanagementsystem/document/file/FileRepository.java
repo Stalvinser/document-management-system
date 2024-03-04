@@ -1,6 +1,5 @@
-package com.astarus.documentmanagementsystem.document.repository;
+package com.astarus.documentmanagementsystem.document.file;
 
-import com.astarus.documentmanagementsystem.document.entity.FileEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

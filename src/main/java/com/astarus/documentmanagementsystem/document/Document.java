@@ -1,5 +1,7 @@
-package com.astarus.documentmanagementsystem.document.entity;
+package com.astarus.documentmanagementsystem.document;
 import com.astarus.documentmanagementsystem.appuser.AppUser;
+import com.astarus.documentmanagementsystem.document.file.FileEntity;
+import com.astarus.documentmanagementsystem.document.share.DocumentShare;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,6 +39,9 @@ public class Document {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "is_public")
+    private Boolean isPublic = false;
 
     @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DocumentShare> shares = new HashSet<>();

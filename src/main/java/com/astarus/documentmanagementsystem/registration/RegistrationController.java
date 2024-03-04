@@ -29,7 +29,7 @@ public class RegistrationController {
                                       RedirectAttributes redirectAttributes,
                                       Model model) {
         try {
-            String userEmail = registrationRequest.getEmail(); // Assuming you have a getEmail() method in RegistrationRequest
+            String userEmail = registrationRequest.getEmail();
             registrationService.register(registrationRequest);
             System.out.println(userEmail);
             redirectAttributes.addAttribute("userEmail", userEmail);

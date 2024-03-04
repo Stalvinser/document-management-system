@@ -37,6 +37,26 @@ public class InitialDataLoader {
             );
             confirmationToken.setConfirmedAt(LocalDateTime.now());
             confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+            AppUser user2 = new AppUser(
+                    "Иван",
+                    "Иванович",
+                    "Alterwayt@yandex.ru",
+                    passwordEncoder.encode("1"),
+                    AppUserRole.USER
+            );
+            user2.setLocked(false);
+            user2.setEnabled(true);
+            appUserRepository.save(user2);
+
+            ConfirmationToken confirmationToken2 = new ConfirmationToken(
+                    "6687680c-8525-4fb3-8e02-ed68ca7555f4",
+                    LocalDateTime.now(),
+                    LocalDateTime.now().plusHours(1),
+                    user
+            );
+            confirmationToken2.setConfirmedAt(LocalDateTime.now());
+            confirmationTokenService.saveConfirmationToken(confirmationToken2);
         };
     }
 }

@@ -1,7 +1,7 @@
 package com.astarus.documentmanagementsystem.appuser;
 
-import com.astarus.documentmanagementsystem.document.entity.Document;
-import com.astarus.documentmanagementsystem.document.entity.DocumentShare;
+import com.astarus.documentmanagementsystem.document.Document;
+import com.astarus.documentmanagementsystem.document.share.DocumentShare;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

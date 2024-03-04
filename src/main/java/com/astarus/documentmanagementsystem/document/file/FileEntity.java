@@ -1,4 +1,5 @@
-package com.astarus.documentmanagementsystem.document.entity;
+package com.astarus.documentmanagementsystem.document.file;
+import com.astarus.documentmanagementsystem.document.Document;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
-package com.astarus.documentmanagementsystem.document.repository;
+package com.astarus.documentmanagementsystem.document;
 
-import com.astarus.documentmanagementsystem.document.entity.Document;
+import com.astarus.documentmanagementsystem.document.Document;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

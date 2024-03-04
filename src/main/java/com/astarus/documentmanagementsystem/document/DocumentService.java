@@ -1,14 +1,11 @@
-package com.astarus.documentmanagementsystem.document.service;
+package com.astarus.documentmanagementsystem.document;
 
 import com.astarus.documentmanagementsystem.appuser.AppUser;
 import com.astarus.documentmanagementsystem.appuser.AppUserRepository;
-import com.astarus.documentmanagementsystem.document.dto.DocumentCreationDTO;
-import com.astarus.documentmanagementsystem.document.entity.Document;
-import com.astarus.documentmanagementsystem.document.entity.DocumentInfoView;
-import com.astarus.documentmanagementsystem.document.entity.FileEntity;
-import com.astarus.documentmanagementsystem.document.repository.DocumentInfoViewRepository;
-import com.astarus.documentmanagementsystem.document.repository.DocumentRepository;
-import com.astarus.documentmanagementsystem.document.repository.FileRepository;
+import com.astarus.documentmanagementsystem.document.view.DocumentInfoView;
+import com.astarus.documentmanagementsystem.document.file.FileEntity;
+import com.astarus.documentmanagementsystem.document.view.DocumentInfoViewRepository;
+import com.astarus.documentmanagementsystem.document.file.FileRepository;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
@@ -30,7 +27,7 @@ import org.springframework.data.domain.Sort;
 @AllArgsConstructor
 public class DocumentService {
 
-    private final AppUserRepository userRepository;
+    private final AppUserRepository appUserRepository;
     private final DocumentRepository documentRepository;
     private final FileRepository fileRepository;
     private final DocumentInfoViewRepository documentInfoViewRepository;
@@ -38,7 +35,7 @@ public class DocumentService {
     @Transactional
     public void saveDocument(DocumentCreationDTO documentCreationDTO, MultipartFile multipartFile) throws IOException {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-        AppUser user = userRepository.findByEmailIgnoreCase(userEmail)
+        AppUser user = appUserRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         String uuid = UUID.randomUUID().toString();
@@ -71,6 +68,20 @@ public class DocumentService {
             Files.deleteIfExists(filePath);
             throw new RuntimeException("Failed to save document and file: " + e.getMessage(), e);
         }
+    }
+
+    public List<DocumentInfoView> findMyDocuments(String userEmail, String sort, String dir) {
+        Sort.Direction direction = Sort.Direction.fromString(dir);
+        Sort sortSpecification = Sort.by(direction, sort);
+
+        // Fetch the user ID based on the email.
+        Optional<AppUser> userOptional = appUserRepository.findByEmailIgnoreCase(userEmail);
+        if (userOptional.isEmpty()) {
+            return Collections.emptyList();
+        }
+        Long userId = userOptional.get().getId();
+
+        return documentInfoViewRepository.findMyDocuments(userId, sortSpecification);
     }
 
     public List<DocumentInfoView> findAllDocuments(String sort, String dir) {

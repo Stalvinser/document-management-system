@@ -1,9 +1,7 @@
-package com.astarus.documentmanagementsystem.document.controller;
+package com.astarus.documentmanagementsystem.document.file;
 
-import com.astarus.documentmanagementsystem.document.service.FileService;
+import com.astarus.documentmanagementsystem.document.file.FileService;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

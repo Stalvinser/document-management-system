@@ -1,7 +1,5 @@
-package com.astarus.documentmanagementsystem.document.service;
+package com.astarus.documentmanagementsystem.document.file;
 
-import com.astarus.documentmanagementsystem.document.entity.FileEntity;
-import com.astarus.documentmanagementsystem.document.repository.FileRepository;
 import lombok.AllArgsConstructor;
 import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;

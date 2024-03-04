@@ -1,7 +1,7 @@
-package com.astarus.documentmanagementsystem.document.entity;
+package com.astarus.documentmanagementsystem.document.share;
 
 import com.astarus.documentmanagementsystem.appuser.AppUser;
-import com.astarus.documentmanagementsystem.document.entity.Document;
+import com.astarus.documentmanagementsystem.document.Document;
 import jakarta.persistence.*;
 
 @Entity

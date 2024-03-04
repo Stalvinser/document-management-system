@@ -1,4 +1,4 @@
-package com.astarus.documentmanagementsystem.document.entity;
+package com.astarus.documentmanagementsystem.document.view;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -20,8 +20,14 @@ public class DocumentInfoView {
     @Column(name = "document_id")
     private Long documentId;
 
+    @Column(name = "app_user_id")
+    private Long appUserId;
+
     @Column(name = "document_name")
     private String documentName;
+
+    @Column(name = "is_public")
+    private Boolean isPublic = false;
 
     @Column(name = "document_date")
     private Date documentDate;

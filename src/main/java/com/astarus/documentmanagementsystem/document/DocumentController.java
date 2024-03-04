@@ -1,12 +1,8 @@
-package com.astarus.documentmanagementsystem.document.controller;
+package com.astarus.documentmanagementsystem.document;
 
-import com.astarus.documentmanagementsystem.document.dto.DocumentCreationDTO;
-import com.astarus.documentmanagementsystem.document.dto.DocumentViewDTO;
-import com.astarus.documentmanagementsystem.document.entity.DocumentInfoView;
-import com.astarus.documentmanagementsystem.document.service.DocumentService;
+import com.astarus.documentmanagementsystem.document.view.DocumentInfoView;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDate;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -74,6 +70,18 @@ public class DocumentController {
         model.addAttribute("currentSort", sort);
         model.addAttribute("currentDir", dir);
         return "documents/searchDocuments";
+    }
+
+    @GetMapping("/my")
+    public String listMyDocuments(@RequestParam(name = "sort", defaultValue = "documentDate") String sort,
+                                  @RequestParam(name = "dir", defaultValue = "desc") String dir,
+                                  Principal principal, Model model) {
+        String userEmail = principal.getName(); // Assuming username is the email.
+        List<DocumentInfoView> documents = documentService.findMyDocuments(userEmail, sort, dir);
+        model.addAttribute("documents", documents);
+        model.addAttribute("currentSort", sort);
+        model.addAttribute("currentDir", dir);
+        return "documents/myDocuments"; // Assuming you have a Thymeleaf template named "myDocuments.html"
     }
 
 

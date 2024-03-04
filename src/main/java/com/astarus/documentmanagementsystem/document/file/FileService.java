@@ -37,7 +37,7 @@ public class FileService {
             return ResponseEntity.notFound().build();
         }
         FileEntity fileEntity = fileOptional.get();
-        String filePath = "files" + File.separator + fileEntity.getDocument().getAppUser().getEmail() + File.separator + fileUuid;
+        String filePath = "files" + File.separator + fileUuid;
         Path path = Paths.get(filePath);
         Resource resource = new UrlResource(path.toUri());
 
@@ -67,7 +67,6 @@ public class FileService {
             Metadata metadata = new Metadata();
             ParseContext context = new ParseContext();
 
-            // Using OOXMLParser to specifically handle .docx format
             Parser parser = new OOXMLParser();
             parser.parse(input, handler, metadata, context);
             return handler.toString();

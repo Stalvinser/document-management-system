@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,11 +38,10 @@ public class DocumentService {
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         AppUser user = appUserRepository.findByEmailIgnoreCase(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-
         String uuid = UUID.randomUUID().toString();
         String originalFilename = multipartFile.getOriginalFilename();
 
-        String directoryPath = "files/" + user.getEmail();
+        String directoryPath = "files";
         Path directory = Paths.get(directoryPath);
         if (!Files.exists(directory)) {
             Files.createDirectories(directory);
@@ -70,11 +70,11 @@ public class DocumentService {
         }
     }
 
-    public List<DocumentInfoView> findMyDocuments(String userEmail, String sort, String dir) {
+    public List<DocumentInfoView> findMyDocuments(String sort, String dir) {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         Sort.Direction direction = Sort.Direction.fromString(dir);
         Sort sortSpecification = Sort.by(direction, sort);
 
-        // Fetch the user ID based on the email.
         Optional<AppUser> userOptional = appUserRepository.findByEmailIgnoreCase(userEmail);
         if (userOptional.isEmpty()) {
             return Collections.emptyList();
@@ -82,13 +82,6 @@ public class DocumentService {
         Long userId = userOptional.get().getId();
 
         return documentInfoViewRepository.findMyDocuments(userId, sortSpecification);
-    }
-
-    public List<DocumentInfoView> findAllDocuments(String sort, String dir) {
-        Sort.Direction direction = Sort.Direction.fromString(dir);
-        Sort sortSpecification = Sort.by(direction, sort);
-
-        return documentInfoViewRepository.findAll(sortSpecification);
     }
 
 
@@ -131,5 +124,6 @@ public class DocumentService {
 
         return documentInfoViewRepository.findAll(spec);
     }
+
 
 }

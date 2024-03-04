@@ -3,8 +3,14 @@ package com.astarus.documentmanagementsystem.document.share;
 import com.astarus.documentmanagementsystem.appuser.AppUser;
 import com.astarus.documentmanagementsystem.document.Document;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "document_share")
 public class DocumentShare {
     @Id

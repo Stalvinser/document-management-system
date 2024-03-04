@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Search Documents</title>
+    <title>Поиск документов</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Document Management System</a>
+    <a class="navbar-brand" href="#">Система управления документами</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -16,46 +16,46 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="/documents">My Documents</a>
+                <a class="nav-link" href="/documents">Мои документы</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/documents/add">Add Document</a>
+                <a class="nav-link" href="/documents/add">Добавить документ</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="/documents/search">Search Documents <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/documents/search">Поиск документов <span class="sr-only">(текущая)</span></a>
             </li>
         </ul>
     </div>
 </nav>
 
 <div class="container mt-5">
-    <h2>Search Documents</h2>
+    <h2>Поиск документов</h2>
     <form id="searchForm" th:action="@{/documents/search}" method="get">
         <div class="row">
             <div class="col-5">
-                <input type="text" class="form-control" name="name" placeholder="Name" th:value="${param.name}"/>
+                <input type="text" class="form-control" name="name" placeholder="Название" th:value="${param.name}"/>
             </div>
             <div class="col-5">
-                <input type="text" class="form-control" name="author" placeholder="Author" th:value="${param.author}"/>
+                <input type="text" class="form-control" name="author" placeholder="Автор" th:value="${param.author}"/>
             </div>
             <div class="col-2">
-                <button type="reset" class="btn btn-secondary btn-block" onclick="resetFormAndSubmit()">Reset</button>
+                <button type="reset" class="btn btn-secondary btn-block" onclick="resetFormAndSubmit()">Сбросить</button>
             </div>
         </div>
         <div class="row mt-3">
             <div class="col">
-                <input type="date" class="form-control" name="dateFrom" placeholder="Date From"
+                <input type="date" class="form-control" name="dateFrom" placeholder="Дата от"
                        th:value="${param.dateFrom}"/>
             </div>
             <div class="col">
-                <input type="date" class="form-control" name="dateTo" placeholder="Date To" th:value="${param.dateTo}"/>
+                <input type="date" class="form-control" name="dateTo" placeholder="Дата до" th:value="${param.dateTo}"/>
             </div>
             <div class="col-5">
-                <input type="text" class="form-control" name="description" placeholder="Description"
+                <input type="text" class="form-control" name="description" placeholder="Описание"
                        th:value="${param.description}"/>
             </div>
             <div class="col-2">
-                <button type="submit" class="btn btn-primary btn-block">Search</button>
+                <button type="submit" class="btn btn-primary btn-block">Поиск</button>
             </div>
         </div>
         <input type="hidden" name="sort" th:value="${currentSort}" />
@@ -67,50 +67,49 @@
         <tr>
             <th scope="col">
                 <a th:href="@{/documents/search(sort='documentName', dir=${currentSort == 'documentName' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
-                    Name <i th:if="${currentSort == 'documentName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                    Название <i th:if="${currentSort == 'documentName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents/search(sort='documentDate', dir=${currentSort == 'documentDate' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
-                    Date <i th:if="${currentSort == 'documentDate'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                    Дата <i th:if="${currentSort == 'documentDate'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents/search(sort='authorName', dir=${currentSort == 'authorName' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
-                    Author <i th:if="${currentSort == 'authorName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
-                </a>
-            </th>
-            <th scope="col">
-                <a th:href="@{/documents/search(sort='description', dir=${currentSort == 'description' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
-                    Description <i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                    Автор <i th:if="${currentSort == 'authorName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
             <th scope="col">
                 <a th:href="@{/documents/search(sort='fileName', dir=${currentSort == 'fileName' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
-                    File Name <i th:if="${currentSort == 'fileName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                    Имя файла <i th:if="${currentSort == 'fileName'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                 </a>
             </th>
-            <th scope="col">Open File</th>
+            <th scope="col">
+                <a th:href="@{/documents/search(sort='description', dir=${currentSort == 'description' && currentDir == 'ASC' ? 'DESC' : 'ASC'}, name=${param.name}, author=${param.author}, description=${param.description}, dateFrom=${param.dateFrom}, dateTo=${param.dateTo})}">
+                    Описание файла<i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
+                </a>
+            </th>
+            <th scope="col">Открыть файл</th>
         </tr>
-
         </thead>
         <tbody th:each="document : ${documents}">
         <tr>
             <td th:text="${document.documentName}"></td>
             <td th:text="${#dates.format(document.documentDate, 'dd-MM-yyyy')}"></td>
             <td th:text="${document.authorName}"></td>
-            <td th:text="${document.description}"></td>
             <td th:text="${document.fileName}"></td>
-            <td><a th:href="@{'/files/' + ${document.fileUuid}}" target="_blank">Open</a></td>
+            <td th:text="${document.description}"></td>
+            <td><a th:href="@{'/files/' + ${document.fileUuid}}" target="_blank"><i class="bi bi-file-earmark"></i></a></td>
         </tr>
         </tbody>
     </table>
 </div>
 <script>
     function resetFormAndSubmit() {
-        // Clear input fields
+        // Очистить поля ввода
         document.querySelectorAll('input[type=text], input[type=date]').forEach(input => input.value = '');
-        // Submit the form
+        // Отправить форму
         document.getElementById('searchForm').submit();
     }
 </script>

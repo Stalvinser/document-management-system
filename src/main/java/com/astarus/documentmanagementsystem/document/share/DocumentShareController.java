@@ -27,7 +27,7 @@ public class DocumentShareController {
 
     @GetMapping("/share/{documentId}")
     public String showShareForm(@PathVariable Long documentId, Model model) {
-        List<UserDTO> users = UserDTO.convertToDTOList(appUserService.findAll());
+        List<UserDTO> users = UserDTO.convertToDTOList(appUserService.findAllExceptMyself());
         model.addAttribute("users", users);
         model.addAttribute("documentId", documentId);
         model.addAttribute("shareRequest", new ShareRequest());
@@ -42,9 +42,9 @@ public class DocumentShareController {
             } else {
                 documentShareService.shareDocumentToUser(documentId, shareRequest);
             }
-            redirectAttributes.addFlashAttribute("successMessage", "Document shared successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Успешно!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Error sharing document: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Возникла ошибка, действие отменено");
         }
         return "redirect:/documents";
     }

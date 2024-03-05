@@ -53,7 +53,7 @@ public class InitialDataLoader {
                     "6687680c-8525-4fb3-8e02-ed68ca7555f4",
                     LocalDateTime.now(),
                     LocalDateTime.now().plusHours(1),
-                    user
+                    user2
             );
             confirmationToken2.setConfirmedAt(LocalDateTime.now());
             confirmationTokenService.saveConfirmationToken(confirmationToken2);

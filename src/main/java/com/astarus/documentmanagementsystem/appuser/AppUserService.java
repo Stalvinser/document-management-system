@@ -3,6 +3,7 @@ package com.astarus.documentmanagementsystem.appuser;
 import com.astarus.documentmanagementsystem.registration.token.ConfirmationToken;
 import com.astarus.documentmanagementsystem.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -66,5 +67,10 @@ public class AppUserService implements UserDetailsService {
 
     public List<AppUser> findAll() {
         return appUserRepository.findAll();
+    }
+
+    public List<AppUser> findAllExceptMyself() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        return appUserRepository.findAllByEmailNot(userEmail);
     }
 }

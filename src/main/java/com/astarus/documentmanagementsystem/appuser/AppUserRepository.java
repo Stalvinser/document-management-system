@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +21,5 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             "SET a.enabled = TRUE WHERE a.email = ?1")
     void enableAppUser(String email);
 
+    List<AppUser> findAllByEmailNot(String excludedEmail);
 }

@@ -30,8 +30,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         RequestMatcher publicUrls = new OrRequestMatcher(
                 new AntPathRequestMatcher("/registration"),
-                new AntPathRequestMatcher("/registration/confirm"),
-                new AntPathRequestMatcher("/registrationSuccess"),
+                new AntPathRequestMatcher("/registration/*"),
                 new AntPathRequestMatcher("/h2-console/**")
 
         );

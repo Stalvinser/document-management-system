@@ -31,7 +31,6 @@ public class RegistrationController {
         try {
             String userEmail = registrationRequest.getEmail();
             registrationService.register(registrationRequest);
-            System.out.println(userEmail);
             redirectAttributes.addAttribute("userEmail", userEmail);
             return "redirect:/registration/success";
         } catch (EmailSendingException e) {

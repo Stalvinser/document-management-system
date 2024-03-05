@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Поделиться документом</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Система управления документами</a>
+</nav>
+
+<div class="container mt-5">
+    <h2>Поделиться документом</h2>
+    <form th:action="@{/documents/share/{documentId}(documentId=${documentId})}" th:object="${shareRequest}" method="post">
+        <div class="mb-3">
+            <label class="form-label">Опции</label>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="shareOption" id="shareWithEveryone" value="everyone">
+                <label class="form-check-label" for="shareWithEveryone">
+                    Поделиться со всеми пользователями
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="shareOption" id="shareWithSpecificUser" value="specificUser">
+                <label class="form-check-label" for="shareWithSpecificUser">
+                    Поделиться с конкретным пользователем
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="userId">Выберите пользователя</label>
+            <select class="form-control" id="userId" name="userId" disabled>
+                <option value="">Выберите пользователя</option>
+                <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.fullName}"></option>
+            </select>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="canView" name="canView">
+            <label class="form-check-label" for="canView">Может просматривать</label>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="canEdit" name="canEdit">
+            <label class="form-check-label" for="canEdit">Может редактировать</label>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="canDelete" name="canDelete">
+            <label class="form-check-label" for="canDelete">Может удалять</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Поделиться документом</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userSelect = document.getElementById('userId');
+        const shareWithSpecificUserRadio = document.getElementById('shareWithSpecificUser');
+        document.getElementsByName('shareOption').forEach(radio => {
+            radio.addEventListener('change', function () {
+                userSelect.disabled = !(shareWithSpecificUserRadio.checked);
+            });
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

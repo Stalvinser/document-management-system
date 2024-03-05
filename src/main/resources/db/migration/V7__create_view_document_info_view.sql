@@ -4,7 +4,6 @@ SELECT
     d.id AS document_id,
     d.name AS document_name,
     d.date AS document_date,
-    d.is_public,
     d.description,
     CONCAT(u.first_name, ' ', u.last_name) AS author_name,
     f.id AS file_id,

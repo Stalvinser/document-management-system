@@ -1,6 +1,5 @@
 package com.astarus.documentmanagementsystem.document;
 
-import com.astarus.documentmanagementsystem.document.view.DocumentInfoView;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +30,10 @@ public class DocumentController {
                                  RedirectAttributes redirectAttributes) {
         try {
             documentService.saveDocument(documentCreationDTO, file);
-            redirectAttributes.addFlashAttribute("successMessage", "Document uploaded successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Документ успешно загружен!");
             return "redirect:/documents";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Upload failed: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Ошибка загрузки документа");
             return "redirect:/documents";
         }
     }

@@ -1,5 +1,6 @@
-package com.astarus.documentmanagementsystem.document.view;
+package com.astarus.documentmanagementsystem.document;
 
+import com.astarus.documentmanagementsystem.document.DocumentInfoView;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -13,7 +14,9 @@ public interface DocumentInfoViewRepository extends JpaRepository<DocumentInfoVi
 
     @Query("SELECT v FROM DocumentInfoView v WHERE v.appUserId = :userId " +
             "OR v.documentId IN (SELECT ds.document.id FROM DocumentShare ds WHERE ds.appUser.id = :userId) " +
-            "OR v.isPublic = true")
+            "OR v.documentId IN (SELECT ds.document.id FROM DocumentPublicShare ds WHERE ds.document.id = v.documentId)")
     List<DocumentInfoView> findMyDocuments(@Param("userId") Long userId, Sort sort);
+
+
 
 }

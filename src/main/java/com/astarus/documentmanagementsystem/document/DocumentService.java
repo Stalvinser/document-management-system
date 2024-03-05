@@ -2,9 +2,7 @@ package com.astarus.documentmanagementsystem.document;
 
 import com.astarus.documentmanagementsystem.appuser.AppUser;
 import com.astarus.documentmanagementsystem.appuser.AppUserRepository;
-import com.astarus.documentmanagementsystem.document.view.DocumentInfoView;
 import com.astarus.documentmanagementsystem.document.file.FileEntity;
-import com.astarus.documentmanagementsystem.document.view.DocumentInfoViewRepository;
 import com.astarus.documentmanagementsystem.document.file.FileRepository;
 import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -80,7 +77,6 @@ public class DocumentService {
             return Collections.emptyList();
         }
         Long userId = userOptional.get().getId();
-
         return documentInfoViewRepository.findMyDocuments(userId, sortSpecification);
     }
 
@@ -121,9 +117,7 @@ public class DocumentService {
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
-
         return documentInfoViewRepository.findAll(spec);
     }
-
 
 }

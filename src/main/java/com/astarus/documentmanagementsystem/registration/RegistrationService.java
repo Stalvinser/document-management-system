@@ -70,7 +70,7 @@ public class RegistrationService {
     }
 
     private String buildEmail(String name, String link) throws IOException {
-        String filePath = new ClassPathResource("templates/emailTemplate.html").getFile().getAbsolutePath();
+        String filePath = new ClassPathResource("templates/emails/emailTemplate.html").getFile().getAbsolutePath();
         String content = new String(Files.readAllBytes(Paths.get(filePath)));
         content = content.replace("{{name}}", name).replace("{{link}}", link);
         return content;

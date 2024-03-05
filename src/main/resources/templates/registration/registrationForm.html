@@ -11,7 +11,7 @@
     <div th:if="${registrationError}" class="alert alert-danger mt-3" role="alert">
         <p th:text="${registrationError}"></p>
     </div>
-    <form th:action="@{/registration}" th:object="${registrationRequest}" method="post" class="needs-validation" novalidate>
+    <form th:action="@{/templates/registration}" th:object="${registrationRequest}" method="post" class="needs-validation" novalidate>
         <div class="form-group">
             <label for="firstName">Имя:</label>
             <input type="text" class="form-control" id="firstName" name="firstName" th:value="*{firstName}" required>

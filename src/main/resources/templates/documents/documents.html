@@ -63,6 +63,7 @@
                         Описание файла<i th:if="${currentSort == 'description'}" th:class="${currentDir == 'ASC' ? 'bi bi-sort-up' : 'bi bi-sort-down'}"></i>
                     </a>
                 </th>
+                <th scope="col">Опции</th>
                 <th scope="col">Открыть файл</th>
             </tr>
             </thead>
@@ -73,6 +74,9 @@
                 <td th:text="${document.authorName}"></td>
                 <td th:text="${document.fileName}"></td>
                 <td th:text="${document.description}"></td>
+                <td>
+                    <a th:href="@{'/documents/share/' + ${document.documentId}}" class="btn btn-primary">Поделиться</a>
+                </td>
                 <td><a th:href="@{'/files/' + ${document.fileUuid}}" target="_blank"><i class="bi bi-file-earmark"></i></a></td>
             </tr>
             </tbody>

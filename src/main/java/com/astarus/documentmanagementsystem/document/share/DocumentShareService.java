@@ -13,30 +13,33 @@ public class DocumentShareService {
     private final DocumentRepository documentRepository;
     private final DocumentShareRepository documentShareRepository;
     private final AppUserRepository appUserRepository;
+    private final DocumentPublicShareRepository documentPublicShareRepository;
 
-    public void shareDocument(Long documentId, Long userId, boolean canView, boolean canEdit, boolean canDelete) {
-        Document document = documentRepository.findById(documentId).orElseThrow(() -> new RuntimeException("Document not found"));
-        if (userId != null) {
-            AppUser user = appUserRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-            DocumentShare share = new DocumentShare();
-            share.setDocument(document);
-            share.setAppUser(user);
-            share.setCanView(canView);
-            share.setCanEdit(canEdit);
-            share.setCanDelete(canDelete);
-            documentShareRepository.save(share);
-        } else {
-            document.setIsPublic(true);
-            documentRepository.save(document);
-        }
+    public void shareDocumentToUser(Long documentId, ShareRequest shareRequest) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Document not found"));
+        AppUser user = appUserRepository.findById(shareRequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        DocumentShare documentShare = new DocumentShare();
+        documentShare.setDocument(document);
+        documentShare.setCanView(shareRequest.isCanView());
+        documentShare.setCanEdit(shareRequest.isCanEdit());
+        documentShare.setCanDelete(shareRequest.isCanDelete());
+        documentShare.setAppUser(user);
+        documentShareRepository.save(documentShare);
+        documentRepository.save(document);
     }
-    public boolean userHasAccess(Long documentId, Long userId) {
-        Document document = documentRepository.findById(documentId).orElseThrow(() -> new RuntimeException("Document not found"));
-        if (document.getIsPublic() || document.getAppUser().getId().equals(userId)) {
-            return true;
-        }
-        return documentShareRepository.findByDocumentIdAndAppUserId(documentId, userId)
-                .map(share -> share.isCanView() || share.isCanEdit() || share.isCanDelete())
-                .orElse(false);
+
+    public void shareDocumentToEveryone(Long documentId, ShareRequest shareRequest) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Document not found"));
+        DocumentPublicShare documentPublicShare = new DocumentPublicShare();
+        documentPublicShare.setDocument(document);
+        documentPublicShare.setCanView(shareRequest.isCanView());
+        documentPublicShare.setCanEdit(shareRequest.isCanEdit());
+        documentPublicShare.setCanDelete(shareRequest.isCanDelete());
+        documentPublicShareRepository.save(documentPublicShare);
+        documentRepository.save(document);
     }
+
 }

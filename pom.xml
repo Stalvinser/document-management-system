@@ -72,17 +72,6 @@
             <version>1.18.30</version>
             <scope>provided</scope>
         </dependency>
-        <!--		<dependency>
-                    <groupId>org.apache.poi</groupId>
-                    <artifactId>poi</artifactId>
-                    <version>5.2.3</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.apache.poi</groupId>
-                    <artifactId>poi-ooxml</artifactId>
-                    <version>5.2.3</version>
-                </dependency>-->
-        <!-- Apache POI for handling .docx files -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
